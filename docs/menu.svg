@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="262" viewBox="0 0 420 262" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="9" flood-color="#000" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <!-- menu bar -->
+  <rect x="0" y="0" width="420" height="38" fill="#3f5371"/>
+  <rect x="12" y="5" width="54" height="28" rx="8" fill="#ffffff" fill-opacity="0.2"/>
+  <!-- laptop icon -->
+  <rect x="28" y="11.5" width="22" height="13.5" rx="2.2" fill="none" stroke="#ffffff" stroke-width="1.8"/>
+  <path d="M23.5 27.5 H54.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- menu -->
+  <rect x="12" y="46" width="396" height="204" rx="12" fill="#f4f4f5" stroke="#000" stroke-opacity="0.12" filter="url(#shadow)"/>
+
+  <text x="48" y="82" font-size="15" fill="#9b9ba0">On AC power · stays awake with the lid closed</text>
+  <line x1="28" y1="100" x2="392" y2="100" stroke="#000" stroke-opacity="0.12"/>
+
+  <text x="48" y="134" font-size="15" fill="#1d1d1f">Turn Off</text>
+  <text x="28" y="172" font-size="15" font-weight="600" fill="#1d1d1f">✓</text>
+  <text x="48" y="172" font-size="15" fill="#1d1d1f">Launch at Login</text>
+  <line x1="28" y1="192" x2="392" y2="192" stroke="#000" stroke-opacity="0.12"/>
+
+  <text x="48" y="226" font-size="15" fill="#1d1d1f">Quit</text>
+  <text x="392" y="226" font-size="15" fill="#9b9ba0" text-anchor="end">⌘Q</text>
+</svg>

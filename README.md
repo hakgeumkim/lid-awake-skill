@@ -1,5 +1,7 @@
 # lid-awake-skill
 
+<img src="docs/menu.svg" alt="LidAwake menu bar menu: On AC power · stays awake with the lid closed, Turn Off, Launch at Login, Quit" width="420">
+
 An agent skill that builds LidAwake, a tiny macOS menu bar app: **keep a MacBook awake with the lid closed while it is on the charger, and let it sleep normally on battery.**
 
 Useful when a MacBook doubles as a home server: a Claude Code Remote Control host, tmux sessions, a dev server, a download.
@@ -13,6 +15,14 @@ Useful when a MacBook doubles as a home server: a Claude Code Remote Control hos
 `disablesleep` is the only switch that stops lid-close sleep without an external display, but it is **one system-wide value**. `-a`, `-b` and `-c` all set the same flag ([Apple's PowerManagement source](https://github.com/apple-oss-distributions/PowerManagement/blob/main/pmset/pmset.m): "system-wide settings, not tied to power source"). So `sudo pmset -c disablesleep 1` also keeps the Mac awake on battery. `caffeinate` cannot stop lid-close sleep at all.
 
 LidAwake listens for power-source changes (IOKit notification, no polling) and flips the flag: `1` on AC, `0` on battery. Amphetamine's closed-display mode uses the same flag, but its sessions also hold a display-sleep assertion, which can lock the screen during video. LidAwake never touches display sleep.
+
+## Install with Homebrew
+
+```bash
+brew install hakgeumkim/tap/lid-awake
+```
+
+It builds the app from source. Follow the printed steps: run `install-sudoers.sh` once, copy the app to `~/Applications`, and start it.
 
 ## Install the skill
 
@@ -54,7 +64,7 @@ The file is checked with `visudo -cf` before it is installed. Turn on **로그�
 ## Known limits
 
 - If the app crashes while on the charger, the flag stays on until the app starts again. Check with `pmset -g | grep SleepDisabled`.
-- Menu labels are in Korean. Change them in `main.swift`.
+- The app's menu labels are in Korean (the picture above shows them in English). Change them in `main.swift`.
 
 ## License
 
