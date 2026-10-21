@@ -11,7 +11,7 @@ A native menu bar app built from source on the user's Mac (same pattern as text-
 
 - `pmset disablesleep` is the only switch that stops lid-close sleep without an external display. It is one system-wide value: `-a`, `-b` and `-c` all set the same flag (Apple PowerManagement source: "system-wide settings, not tied to power source"). So `sudo pmset -c disablesleep 1` also blocks sleep on battery.
 - `caffeinate` and IOKit sleep assertions do not stop lid-close sleep.
-- Amphetamine uses the same flag (it installs `/etc/sudoers.d/amphetamine_PowerProtect` and reads `AppleClamshellState`), but its sessions also hold a display-sleep assertion. With it running, the screen locked during full-screen video (turg 2026-10-21). LidAwake never touches display sleep.
+- Amphetamine uses the same flag (it installs `/etc/sudoers.d/amphetamine_PowerProtect` and reads `AppleClamshellState`), but its sessions also hold a display-sleep assertion. With it running, the screen can lock during full-screen video. LidAwake never touches display sleep.
 
 ## What the app does
 
