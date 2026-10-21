@@ -56,6 +56,22 @@ func setSleepDisabled(_ on: Bool) -> Bool {
 }
 
 nonisolated(unsafe) weak var shared: AppDelegate?
+nonisolated(unsafe) var lidNotifier: io_object_t = 0
+nonisolated(unsafe) var lidPort: IONotificationPortRef?
+let kIOPMMessageClamshellStateChange: UInt32 = 0xe0034100
+
+/// Calls back on the main run loop whenever the lid opens or closes.
+func watchLid() {
+    let root = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPMrootDomain"))
+    guard root != 0, let port = IONotificationPortCreate(kIOMainPortDefault) else { return }
+    defer { IOObjectRelease(root) }
+    CFRunLoopAddSource(CFRunLoopGetMain(), IONotificationPortGetRunLoopSource(port).takeUnretainedValue(), .defaultMode)
+    IOServiceAddInterestNotification(port, root, kIOGeneralInterest, { _, _, messageType, _ in
+        guard messageType == kIOPMMessageClamshellStateChange else { return }
+        MainActor.assumeIsolated { shared?.lidChanged() }
+    }, nil, &lidNotifier)
+    lidPort = port
+}
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -87,7 +103,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             CFRunLoopAddSource(CFRunLoopGetMain(), source, .defaultMode)
             powerSource = source
         }
+        watchLid()
         apply()
+    }
+
+    /// Lid closed while staying awake: turn the display off now. With "require password immediately"
+    /// this also locks the screen, which normally happens only because the Mac goes to sleep.
+    func lidChanged() {
+        guard lidClosed() else { return }
+        if sleepDisabled() == true {
+            run(pmset, ["displaysleepnow"])
+        } else if !onAC() {
+            apply()
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {

@@ -17,6 +17,7 @@ A native menu bar app built from source on the user's Mac (same pattern as text-
 
 - On every plug or unplug (IOKit power-source notification, no polling) it sets `disablesleep 1` on AC and `0` on battery.
 - If the Mac is unplugged with the lid already closed, it also runs `pmset sleepnow`.
+- When the lid closes while it stays awake, it runs `pmset displaysleepnow`: the screen goes black, and with "require password immediately" (`sysadminctl -screenLock status` → immediate) opening the lid shows the lock screen. Lid events come from the IOPMrootDomain clamshell interest notification (`0xe0034100`).
 - On quit (and logout or shutdown) it sets `disablesleep 0`.
 - Menu: status line, 켜기/끄기, 로그인 시 실행, 종료. Icon: `laptopcomputer` = stays awake with the lid closed, `moon.zzz` = sleeps normally.
 - Setting: `defaults read com.hakgeumkim.LidAwake enabled` (default true).
